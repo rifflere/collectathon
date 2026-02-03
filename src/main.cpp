@@ -19,7 +19,8 @@
 static constexpr bn::fixed SPEED = 1;
 
 // Width and height of the the player and treasure bounding boxes
-static constexpr bn::size PLAYER_SIZE = {8, 8};
+//static constexpr bn::size PLAYER_SIZE = {8, 8};
+static constexpr bn::size BEE_SIZE = {8, 8};
 static constexpr bn::size TREASURE_SIZE = {8, 8};
 
 // Full bounds of the screen
@@ -47,11 +48,11 @@ int main()
 
     int score = 0;
 
-    bn::sprite_ptr player = bn::sprite_items::square.create_sprite(-50, 50);
+    //bn::sprite_ptr player = bn::sprite_items::square.create_sprite(-50, 50);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
     bn::sprite_ptr bee = bn::sprite_items::buzz.create_sprite(0, 20);
 
-    BN_LOG("Buzz graphics count: ", bn::sprite_items::buzz.tiles_item().graphics_count());
+    //BN_LOG("Buzz graphics count: ", bn::sprite_items::buzz.tiles_item().graphics_count());
 
     bn::sprite_animate_action<2> bee_animation = bn::create_sprite_animate_action_forever(bee, 6, bn::sprite_items::buzz.tiles_item(), 0, 1);
 
@@ -62,33 +63,33 @@ int main()
         // Move player with d-pad
         if (bn::keypad::left_held())
         {
-            player.set_x(player.x() - SPEED);
+            bee.set_x(bee.x() - SPEED);
         }
         if (bn::keypad::right_held())
         {
-            player.set_x(player.x() + SPEED);
+            bee.set_x(bee.x() + SPEED);
         }
         if (bn::keypad::up_held())
         {
-            player.set_y(player.y() - SPEED);
+            bee.set_y(bee.y() - SPEED);
         }
         if (bn::keypad::down_held())
         {
-            player.set_y(player.y() + SPEED);
+            bee.set_y(bee.y() + SPEED);
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
-        bn::rect player_rect = bn::rect(player.x().round_integer(),
-                                        player.y().round_integer(),
-                                        PLAYER_SIZE.width(),
-                                        PLAYER_SIZE.height());
+        bn::rect bee_rect = bn::rect(bee.x().round_integer(),
+                                        bee.y().round_integer(),
+                                        BEE_SIZE.width(),
+                                        BEE_SIZE.height());
         bn::rect treasure_rect = bn::rect(treasure.x().round_integer(),
                                           treasure.y().round_integer(),
                                           TREASURE_SIZE.width(),
                                           TREASURE_SIZE.height());
 
         // If the bounding boxes overlap, set the treasure to a new location an increase score
-        if (player_rect.intersects(treasure_rect))
+        if (bee_rect.intersects(treasure_rect))
         {
             // Jump to any random point in the screen
             int new_x = rng.get_int(MIN_X, MAX_X);
