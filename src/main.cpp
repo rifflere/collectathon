@@ -8,9 +8,11 @@
 #include <bn_sprite_text_generator.h>
 #include <bn_size.h>
 #include <bn_string.h>
+#include <bn_sprite_animate_actions.h>
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
+#include "bn_sprite_items_buzz.h"
 #include "common_fixed_8x16_font.h"
 
 // Pixels / Frame player moves at
@@ -47,9 +49,16 @@ int main()
 
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(-50, 50);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
+    bn::sprite_ptr bee = bn::sprite_items::buzz.create_sprite(0, 20);
+
+    BN_LOG("Buzz graphics count: ", bn::sprite_items::buzz.tiles_item().graphics_count());
+
+    bn::sprite_animate_action<2> bee_animation = bn::create_sprite_animate_action_forever(bee, 6, bn::sprite_items::buzz.tiles_item(), 0, 1);
 
     while (true)
     {
+        bee_animation.update();
+
         // Move player with d-pad
         if (bn::keypad::left_held())
         {
